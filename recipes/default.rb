@@ -1,5 +1,6 @@
 include_recipe "apache2"
 include_recipe "apache2::mod_php5"
+include_recipe "apache2::mod_ssl"
 include_recipe "percona::server"
 
 if ['debian'].member? node["platform"]
@@ -24,12 +25,14 @@ if ['debian'].member? node["platform"]
 		cwd "/home"
 		code <<-EOH
 		tar xvfz racktables.tar.gz
-		mv racktables-master racktables
+		rsync -Wav --progress racktables/racktables-master/* racktables/
+		rm -rf racktables/racktables-master
 		EOH
 	end
 	directory "/var/www" do
 		recursive true
 		action :delete
+		only_if do ::File.directory?("/var/www") end
 	end
 	link "/var/www" do
 		to "/home/racktables/wwwroot"

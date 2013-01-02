@@ -25,8 +25,7 @@ if ['debian'].member? node["platform"]
 		cwd "/home"
 		code <<-EOH
 		tar xvfz racktables.tar.gz
-		rsync -Wav --progress racktables/racktables-master/* racktables/
-		rm -rf racktables/racktables-master
+		mv /home/racktables-master /home/racktables
 		EOH
 	end
 	directory "/var/www" do

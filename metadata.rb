@@ -1,15 +1,16 @@
-maintainer				'Bigpoint GmbH'
-maintainer_email		'jtabel@bigpoint.net'
-license					'All rights reserved'
-description				'Installs racktables DC asset management system'
+maintainer				"Bigpoint GmbH"
+maintainer_email		"jtabel@bigpoint.net"
+license					"All rights reserved"
+description				"Installs racktables DC asset management system"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version					'0.0.1'
+version					"0.0.1"
 
-depends 				'apache2'
-depends					'percona'
+recipe "racktables", "Installs racktables DC asset management system"
+
+depends					"apache2"
+depends					"percona"
 
 %w{ debian }.each do |os|
 	supports os
 end
 
-recipe 'racktables::default'. 'Installs racktables DC asset management system'

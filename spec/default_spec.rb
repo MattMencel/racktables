@@ -3,9 +3,8 @@ require 'chefspec'
 %w{ debian }.each do |platform|
 	describe "The racktables::default #{platform} recipe" do
 	before (:all) {
-		@chef_run = ChefSpec::ChefRunner.new
+		@chef_run = ChefSpec::ChefRunner.new.converge 'racktables::default'
 		@chef_run.node.automatic_attrs["platform"] = platform
-		@chef_run.converge 'racktables::default'
 	}
 	case platform
 	when "debian"

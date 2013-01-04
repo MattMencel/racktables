@@ -26,7 +26,7 @@ require 'chefspec'
 		@chef_run.should execute_command 'mv /home/racktables-master /home/racktables'
 	end
 	it "should have home/racktables/wwwroot there to create symlink" do
-		File.should exist("/home/racktables/wwwroot"
+		File.should exist("/home/racktables/wwwroot")
 	end
 	it "should delete /var/www" do
 		@chef_run.should delete_directory '/var/www'

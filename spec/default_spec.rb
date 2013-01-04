@@ -15,23 +15,23 @@ require 'chefspec'
 			end
 		end
 	end
-	it "should donwload racktables.tar.gz file" do
-		@chef_run.should create_remote_file '/home/racktables.tar.gz'
-	end
-	it "should extract racktables.tar.gz" do
-		@chef_run.should execute_command 'tar xvfz racktables.tar.gz'
-	end
-	it "should move the extracted folder to /home/racktables" do
-		@chef_run.should execute_command 'mv /home/racktables-master /home/racktables'
-	end
-	it "should have home/racktables/wwwroot there to create symlink" do
-		File.should exist("/home/racktables/wwwroot")
-	end
-	it "should delete /var/www" do
-		@chef_run.should delete_directory '/var/www'
-	end
-	it "should link /home/racktables/wwwroot to /var/www" do
-		@chef_run.should create_link "/var/www"
-	end
+#	it "should donwload racktables.tar.gz file" do
+#		@chef_run.should create_remote_file '/home/racktables.tar.gz'
+#	end
+#	it "should extract racktables.tar.gz" do
+#		@chef_run.should execute_command 'tar xvfz racktables.tar.gz'
+#	end
+#	it "should move the extracted folder to /home/racktables" do
+#		@chef_run.should execute_command 'mv /home/racktables-master /home/racktables'
+#	end
+#	it "should have home/racktables/wwwroot there to create symlink" do
+#		File.should exist("/home/racktables/wwwroot")
+#	end
+#	it "should delete /var/www" do
+#		@chef_run.should delete_directory '/var/www'
+#	end
+#	it "should link /home/racktables/wwwroot to /var/www" do
+#		@chef_run.should create_link "/var/www"
+#	end
 	end
 end

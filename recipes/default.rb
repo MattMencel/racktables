@@ -3,7 +3,7 @@ include_recipe "apache2::mod_php5"
 include_recipe "apache2::mod_ssl"
 include_recipe "percona::server"
 
-if ['debian'].member? node["platform"]
+#if ['debian'].member? node["platform"]
 
 
 	pkgs = value_for_platform(
@@ -37,6 +37,6 @@ if ['debian'].member? node["platform"]
 		to "/home/racktables/wwwroot"
 		not_if do ::File.symlink?("/var/www") end
 	end
-end
+#end
 
 # vim: set ft=ruby et ts=4 sw=4

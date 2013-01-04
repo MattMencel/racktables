@@ -7,12 +7,11 @@ require 'chefspec'
 		@chef_run.node.automatic_attrs["platfrom"] = platform
 	}
 	case platform
-		when "debian"
-			# check, that all packages are installed
-			%w{ php5-gd php5-ldap php5-curl php5-mysql php5-snmp }. each do |pkg|
-				it "should install #{pkg}" do
-					@chef_run.should install_package pkg
-				end
+	when "debian"
+		# check, that all packages are installed
+		%w{ php5-gd php5-ldap php5-curl php5-mysql php5-snmp }. each do |pkg|
+			it "should install #{pkg}" do
+				@chef_run.should install_package pkg
 			end
 		end
 	end
@@ -33,5 +32,6 @@ require 'chefspec'
 	end
 	it "should link /home/racktables/wwwroot to /var/www" do
 		@chef_run.should create_link "/var/www"
+	end
 	end
 end

@@ -5,6 +5,7 @@ require 'chefspec'
 	before (:all) {
 		@chef_run = ChefSpec::ChefRunner.new
 		@chef_run.node.automatic_attrs["platform"] = platform
+		@chef_run.converge 'racktables::default'
 	}
 	case platform
 	when "debian"

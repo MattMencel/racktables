@@ -4,7 +4,7 @@ require 'chefspec'
 	describe "The racktables::default #{platform} recipe" do
 	before (:all) {
 		@chef_run = ChefSpec::ChefRunner.new
-		@chef_run.node.automatic_attrs["platfrom"] = platform
+		@chef_run.node.automatic_attrs["platform"] = platform
 	}
 	case platform
 	when "debian"

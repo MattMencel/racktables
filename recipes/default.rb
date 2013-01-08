@@ -7,7 +7,7 @@ if ['debian'].member? node["platform"]
 
 
 	pkgs = value_for_platform(
-		"default" => %w{ php5-gd php5-ldap php5-curl php5-mysql php5-snmp }
+		"default" => %w{ php5-gd php5-ldap php5-curl php5-mysql php5-snmp rsync }
 	)
 
 	pkgs.each do |pkg|
@@ -25,8 +25,17 @@ if ['debian'].member? node["platform"]
 		cwd "/home"
 		code <<-EOH
 		tar xvfz racktables.tar.gz
-		mv /home/racktables-master /home/racktables
+		cp -vrf racktables-master/* racktables/
 		EOH
+	end
+	file "/home/racktables.tar.gz" do
+		action:delete
+		only_if do ::File.exists?("/home/racktables.tar.gz") end
+	end
+	directory "/home/racktables-master" do
+		recursive true
+		action:delete
+		only_if do ::File.directory?("/home/racktables-master") end
 	end
 	directory "/var/www" do
 		recursive true

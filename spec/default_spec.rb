@@ -26,9 +26,6 @@ require 'chefspec'
 	it "should move the extracted folder to /home/racktables" do
 		@chef_run.should execute_command 'rsync -Wav --progress /home/racktables-master/* /home/racktables/'
 	end
-	it "should have home/racktables/wwwroot there to create symlink" do
-		File.should exist("/home/racktables/wwwroot")
-	end
 	it "should delete /var/www" do
 		@chef_run.should delete_directory '/var/www'
 	end

@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+site 'http://community.opscode.com/api/v1'
+
+cookbook 'racktables',		:path => '.'
+cookbook 'apache2',			:git => 'git@github.com:Bigpoint/apache2.git',			:ref => 'master'
+cookbook 'apt',				:git => 'git://github.com/opscode-cookbooks/apt.git',	:ref => '241e6de'
+cookbook 'percona',			:git => 'git://github.com/phlipper/chef-percona.git',	:ref => '0.7.0'

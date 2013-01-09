@@ -20,13 +20,15 @@ if ['debian'].member? node["platform"]
 		owner "root"
 		group "root"
 	end
-	bash "extract_racktables" do
-		user "root" 
+	execute "extract racktables.tar.gz" do
 		cwd "/home"
-		code <<-EOH
-		tar xvfz racktables.tar.gz
-		rsync -Wa racktables-master/* racktables/
-		EOH
+		user "root"
+		command "tar xvfz racktables.tar.gz"
+		action :run
+	end
+	execute "move racktables" do
+		command "rsync -Wav --progress /home/racktables-master/* /home/Racktables/"
+		action :run
 	end
 	file "/home/racktables.tar.gz" do
 		action:delete

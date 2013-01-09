@@ -24,7 +24,7 @@ require 'chefspec'
 		@chef_run.should execute_command 'tar xvfz racktables.tar.gz'
 	end
 	it "should move the extracted folder to /home/racktables" do
-		@chef_run.should execute_command 'mv /home/racktables-master /home/racktables'
+		@chef_run.should execute_command 'rsync -Wav --progress /home/racktables-master/* /home/racktables/'
 	end
 	it "should have home/racktables/wwwroot there to create symlink" do
 		File.should exist("/home/racktables/wwwroot")

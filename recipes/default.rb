@@ -27,7 +27,7 @@ if ['debian'].member? node["platform"]
 		action :run
 	end
 	execute "move racktables" do
-		command "rsync -Wav --progress /home/racktables-master/* /home/Racktables/"
+		command "rsync -Wav --progress /home/racktables-master/* /home/racktables/"
 		action :run
 	end
 	file "/home/racktables.tar.gz" do

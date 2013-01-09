@@ -25,7 +25,7 @@ if ['debian'].member? node["platform"]
 		cwd "/home"
 		code <<-EOH
 		tar xvfz racktables.tar.gz
-		cp -vrf racktables-master/* racktables/
+		rsync -Wa racktables-master/* racktables/
 		EOH
 	end
 	file "/home/racktables.tar.gz" do

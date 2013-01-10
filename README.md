@@ -17,6 +17,17 @@ The following cookbooks are required for installing racktables:
 
 Currently, racktables cookbook is only tested on Debian, but should run fine on Ubuntu as well.
 
+## Attributes
+
+* node["racktables"]["db"]["host"] - DB Host for racktables MySQL DB. Defaults to localhost
+* node["racktables"]["db"]["name"] - Name of the racktables DB. Defaults to racktables
+* node["racktables"]["db"]["user"] - User for the DB. Defaults to racktables_user
+* node["racktables"]["db"]["password"]  - - Database Password for MySQL. Defaults to racktablespwd
+* node["racktables"]["path"]["apache_conf"] - Path to vhost-conf. Defaults to /etc/apache2/sites-available
+* node["racktables"]["path"]["application"] - Path to application. Defaults to /srv/racktables
+* node["racktables"]["php_include_path"] - include path for php files
+* node["racktables"]["server_aliases"] - Array holding the server aliases for the vhost conf. Default is ["127.0.0.1", "localhost"]
+
 Recipes
 =======
 

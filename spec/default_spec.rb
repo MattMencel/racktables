@@ -18,19 +18,31 @@ require 'chefspec'
 		end
 	end
 	it "should donwload racktables.tar.gz file" do
-		@chef_run.should create_remote_file '/home/racktables.tar.gz'
+		@chef_run.should create_remote_file '/srv/racktables/racktables.tar.gz'
 	end
 	it "should extract racktables.tar.gz" do
 		@chef_run.should execute_command 'tar xvfz racktables.tar.gz'
 	end
 	it "should move the extracted folder to /home/racktables" do
-		@chef_run.should execute_command 'rsync -Wav --progress /home/racktables-master/* /home/racktables/'
+		@chef_run.should execute_command 'rsync -Wav --progress /srv/racktables/racktables-master/* .'
 	end
-	it "should delete /var/www" do
-		@chef_run.should delete_directory '/var/www'
+	it "should delete the extracted directory" do
+		@chef_run.should delete_directory '/srv/racktables/racktables-master'
 	end
-	it "should link /home/racktables/wwwroot to /var/www" do
-		@chef_run.should create_link "/var/www"
+	it "should create the vhost config file from template" do
+		@chef_run.should create_file '/etc/apache2/sites-available/apache2-racktables.conf'
 	end
+	it "should disable default vhost and activate racktables vhost" do
+		@chef_run.should execute_command 'a2enmod rewrite'
+		@chef_run.should execute_command 'a2dissite default'
+		@chef_run.should execute_command 'a2ensite apache2-racktables.conf'
+	end
+	it "should create sessions directory owend by www-data" do
+		@chef_run.should create_directory '/tmp/sessions'
+		@chef_run.directory('/tmp/sessions').should be_owned_by('www-data', 'www-data')
+	end
+	it "should create the database and grant db user rights on it" do
+		@chef_run.should execute_command "mysql -p#{node[:percona][:server][:root_password]} -NBe 'CREATE DATABASE #{node[:racktables][:db][:name]} CHARACTER SET utf8 COLLATE utf8_general_ci;'"
+		@chef_run.should execute_command command "mysql -p#{mysql_root_password} -NBe \"GRANT ALL PRIVILEGES ON #{node[:racktables][:db][:name]}.* TO #{node[:racktables][:db][:user]}@localhost IDENTIFIED BY '#{node[:racktables][:db][:password]}';\""
 	end
 end

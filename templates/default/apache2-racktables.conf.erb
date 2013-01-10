@@ -1,0 +1,67 @@
+<IfModule mod_ssl.c>
+<VirtualHost *:443>
+
+    ServerName racktables.bigpoint.net 
+	ServerAlias <%= @server_aliases.join(" ") %>
+
+    DocumentRoot <%= @document_root %>
+
+    ErrorLog <%= @virtualhost_log_path %>/error_log
+	LogLevel warn
+    CustomLog ${APACHE_LOG_DIR}/ssl_access.log combined
+
+    php_admin_value error_log <%= @virtualhost_log_path %>/php_log
+    php_admin_flag display_errors Off
+    php_admin_value error_reporting 6135
+    php_value session.save_path <%= @virtualhost_tmp_path %>/sessions
+    php_value upload_tmp_dir <%= @virtualhost_tmp_path %>/uploads
+    php_value include_path "<%= @php_include_path.join(':') %>"
+    php_value mbstring.internal_encoding utf-8
+    DirectoryIndex index.html index.php
+
+    <Directory "<%= @document_root %>">
+
+        Options FollowSymLinks
+
+        RewriteEngine On
+
+        RewriteCond %{REQUEST_FILENAME} -s [OR]
+        RewriteCond %{REQUEST_FILENAME} -l [OR]
+        RewriteCond %{REQUEST_FILENAME} -d
+        RewriteRule ^.*$ - [NC,L]
+
+        RewriteRule sitemap\.xml$ index.php
+
+        # REWRTING robots.txt requests
+        RewriteCond %{HTTP_HOST}    ^www\. [NC]
+        RewriteRule ^robots\.txt   /robots/en.robots.txt [L]
+
+        RewriteCond %{HTTP_HOST}    ^([a-z]{2})\. [NC]
+        RewriteRule ^robots\.txt   /robots/%1.robots.txt [L]
+
+        RewriteRule !\.(js|ico|txt|gif|jpg|png|css|pdf|jpeg|xml|swf)$ index.php
+    </Directory>
+
+	SSLEngine on
+	SSLCertificateFile    /etc/ssl/certs/ssl-cert-snakeoil.pem
+	SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+	BrowserMatch "MSIE [2-6]" \
+	    nokeepalive ssl-unclean-shutdown \
+        downgrade-1.0 force-response-1.0
+        # MSIE 7 and newer should be able to use keepalive
+    BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
+
+	<FilesMatch "\.(cgi|shtml|phtml|php)$">
+         SSLOptions +StdEnvVars
+    </FilesMatch>
+    <Directory /usr/lib/cgi-bin>
+    	SSLOptions +StdEnvVars
+	</Directory>
+    KeepAlive On
+    KeepAliveTimeout 2
+    MaxKeepAliveRequests 80
+    php_admin_flag display_errors On
+    php_admin_flag html_errors On
+  
+</VirtualHost>
+</IfModule>

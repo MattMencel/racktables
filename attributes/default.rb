@@ -1,0 +1,9 @@
+default["racktables"]["db"]["host"] = "localhost"
+default["racktables"]["db"]["name"] = "racktables"
+default["racktables"]["db"]["user"] = "racktablesuser"
+default["racktables"]["db"]["password"] = "racktablespwd"
+default["racktables"]["db"]["dumpname"] = "racktables.sql"
+default["racktables"]["path"]["apache_conf"] = "/etc/apache2/sites-available"
+default["racktables"]["path"]["application"] = "/srv/racktables"
+default["racktables"]["php_include_path"] = [ ".","/usr/share/php","/usr/share/pear" ]
+default["racktables"]["server_aliases"] = [ "127.0.0.1", "localhost" ]

@@ -45,4 +45,5 @@ require 'chefspec'
 		@chef_run.should execute_command "mysql -p#{node[:percona][:server][:root_password]} -NBe 'CREATE DATABASE #{node[:racktables][:db][:name]} CHARACTER SET utf8 COLLATE utf8_general_ci;'"
 		@chef_run.should execute_command command "mysql -p#{mysql_root_password} -NBe \"GRANT ALL PRIVILEGES ON #{node[:racktables][:db][:name]}.* TO #{node[:racktables][:db][:user]}@localhost IDENTIFIED BY '#{node[:racktables][:db][:password]}';\""
 	end
+	end
 end

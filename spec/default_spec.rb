@@ -24,7 +24,7 @@ require 'chefspec'
 		@chef_run.should execute_command 'tar xvfz racktables.tar.gz'
 	end
 	it "should move the extracted folder to /home/racktables" do
-		@chef_run.should execute_command 'rsync -Wav --progress /srv/racktables/racktables-master/* .'
+		@chef_run.should execute_command 'rsync -Wav --progress racktables-master/* .'
 	end
 	it "should delete the extracted directory" do
 		@chef_run.should delete_directory '/srv/racktables/racktables-master'

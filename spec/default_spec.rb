@@ -6,6 +6,7 @@ require 'chefspec'
 		@chef_run = ChefSpec::ChefRunner.new
 		@chef_run.node.automatic_attrs["platform"] = platform
 		@chef_run.node.set["lsb"] = { "codename" => "squeeze" }
+		@chef_run.node.set["percona"] = { "server" => { "root_password" => "testpwd" } }
 		@chef_run.converge 'racktables::default'
 	}
 	case platform
@@ -42,8 +43,8 @@ require 'chefspec'
 		@chef_run.directory('/tmp/sessions').should be_owned_by('www-data', 'www-data')
 	end
 	it "should create the database and grant db user rights on it" do
-		@chef_run.should execute_command "mysql -p#{node[:percona][:server][:root_password]} -NBe 'CREATE DATABASE #{node[:racktables][:db][:name]} CHARACTER SET utf8 COLLATE utf8_general_ci;'"
-		@chef_run.should execute_command command "mysql -p#{mysql_root_password} -NBe \"GRANT ALL PRIVILEGES ON #{node[:racktables][:db][:name]}.* TO #{node[:racktables][:db][:user]}@localhost IDENTIFIED BY '#{node[:racktables][:db][:password]}';\""
+		@chef_run.should execute_command "mysql -ptestpwd -NBe 'CREATE DATABASE racktables CHARACTER SET utf8 COLLATE utf8_general_ci;'"
+		@chef_run.should execute_command command "mysql -ptestpwd -NBe \"GRANT ALL PRIVILEGES ON racktables.* TO racktablesuser@localhost IDENTIFIED BY 'racktablespwd';\""
 	end
 	end
 end

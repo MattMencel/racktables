@@ -44,7 +44,7 @@ require 'chefspec'
 	end
 	it "should create the database and grant db user rights on it" do
 		@chef_run.should execute_command "mysql -ptestpwd -NBe 'CREATE DATABASE racktables CHARACTER SET utf8 COLLATE utf8_general_ci;'"
-		@chef_run.should execute_command command "mysql -ptestpwd -NBe \"GRANT ALL PRIVILEGES ON racktables.* TO racktablesuser@localhost IDENTIFIED BY 'racktablespwd';\""
+		@chef_run.should execute_command "mysql -ptestpwd -NBe \"GRANT ALL PRIVILEGES ON racktables.* TO racktablesuser@localhost IDENTIFIED BY 'racktablespwd';\""
 	end
 	end
 end

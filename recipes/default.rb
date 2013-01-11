@@ -7,6 +7,7 @@ include_recipe "percona::server"
 
 mysql_root_user = "root"
 mysql_root_password = node[:percona][:server][:root_password]
+version = node[:racktables][:version]
 dbname = node[:racktables][:db][:name]
 dbuser = node[:racktables][:db][:user]
 dbhost = node[:racktables][:db][:host]
@@ -14,6 +15,7 @@ dbpassword = node[:racktables][:db][:password]
 dbdumpname = node[:racktables][:db][:dumpname]
 server_aliases = node[:racktables][:server_aliases]
 racktables_application_path = node[:racktables][:path][:application]
+racktables_application_user_hash = node[:racktables][:application][:user]
 virtualhost_log_path = "/var/log/apache2"
 virtualhost_tmp_path = "/tmp"
 virtualhost_public_path = "#{racktables_application_path}/wwwroot"
@@ -25,7 +27,7 @@ if ['debian'].member? node["platform"]
 	# Install needed packages
 
 	pkgs = value_for_platform(
-		"default" => %w{ php5-gd php5-ldap php5-curl php5-mysql php5-snmp rsync }
+		"default" => %w{ php5-gd php5-ldap php5-curl php5-mysql php5-snmp rsync unzip }
 	)
 
 	pkgs.each do |pkg|
@@ -115,6 +117,35 @@ if ['debian'].member? node["platform"]
 		command "mysql -p#{mysql_root_password} -NBe \"GRANT ALL PRIVILEGES ON #{dbname}.* TO #{dbuser}@localhost IDENTIFIED BY '#{dbpassword}';\""
 	end
 
+	# import the mysql data for the current version of racktables
+
+	remote_file "/tmp/racktables-contrib.zip" do
+		source "https://github.com/RackTables/racktables-contribs/archive/master.zip"
+		owner "root"
+		group "root"
+	end
+
+	execute "extract racktables-contrib.zip" do
+		cwd "/tmp"
+		user "root"
+		command "unzip -u racktables-contrib.zip"
+		action :run
+	end
+
+	execute "import mysql of current version" do
+		command "mysql #{dbname} -p#{mysql_root_password} < /tmp/racktables-contribs-master/init-full-#{version}.sql"
+	end
+
+	# Last configuration file and user creation for application
+
+	template "#{racktables_application_path}/wwwroot/inc/secret.php" do
+		source "secret.php.erb"
+		mode "0666"
+	end
+
+#	execute "create racktables user" do
+#		command "mysql #{dbname} -p#{mysql_root_password} -NBe \"INSERT INTO UserAccount (user_id, user_name, user_password_hash, user_realname) VALUES (1,'admin','#{racktables_application_user_hash}','RackTables Administrator');\""
+#	end
 end
 
 # vim: set ft=ruby et ts=4 sw=4

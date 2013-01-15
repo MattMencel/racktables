@@ -13,13 +13,8 @@ dbuser = node[:racktables][:db][:user]
 dbhost = node[:racktables][:db][:host]
 dbpassword = node[:racktables][:db][:password]
 dbdumpname = node[:racktables][:db][:dumpname]
-server_aliases = node[:racktables][:server_aliases]
 racktables_application_path = node[:racktables][:path][:application]
 racktables_application_user_hash = node[:racktables][:application][:password]
-virtualhost_log_path = "/var/log/apache2"
-virtualhost_tmp_path = "/tmp"
-virtualhost_public_path = "#{racktables_application_path}/wwwroot"
-php_include_path = node[:racktables][:php_include_path]
 apache_conf_path = node[:racktables][:path][:apache_conf]
 
 if ['debian'].member? node["platform"]
@@ -27,7 +22,7 @@ if ['debian'].member? node["platform"]
 	# Install needed packages
 
 	pkgs = value_for_platform(
-		"default" => %w{ php5-gd php5-ldap php5-curl php5-mysql php5-snmp rsync unzip }
+		"default" => %w{ php5-gd php5-ldap php5-curl php5-mysql php5-snmp rsync unzip git }
 	)
 
 	pkgs.each do |pkg|
@@ -38,52 +33,22 @@ if ['debian'].member? node["platform"]
 
 	# get racktables and extract it, cleaning up afterwards
 
-	directory "#{racktables_application_path}" do
-		recursive true
-		owner "root"
-		group "root"
-		mode 0755
-		action :create
-		not_if do File.directory?("#{racktables_application_path}") end
+	git "#{racktables_application_path}" do
+		repository "git://github.com/RackTables/racktables.git"
+		reference "RackTables-#{version}"
+		action :sync
 	end
-
-	remote_file "#{racktables_application_path}/racktables.tar.gz" do
-		source "https://github.com/RackTables/racktables/archive/master.tar.gz"
-		owner "root"
-		group "root"
-	end
-	execute "extract racktables.tar.gz" do
-		cwd racktables_application_path 
-		user "root"
-		command "tar xvfz racktables.tar.gz"
-		action :run
-	end
-	execute "move racktables" do
-		cwd racktables_application_path
-		command "rsync -Wav --progress racktables-master/* ."
-		action :run
-	end
-	file "#{racktables_application_path}/racktables.tar.gz" do
-		action:delete
-		only_if do ::File.exists?("#{racktables_application_path}/racktables.tar.gz") end
-	end
-	directory "#{racktables_application_path}/racktables-master" do
-		recursive true
-		action:delete
-		only_if do ::File.directory?("#{racktables_application_path}/racktables-master") end
-	end
-
-	# take care of apache vhost configuration
 
 	template "#{apache_conf_path}/apache2-racktables.conf" do
 		source "apache2-racktables.conf.erb"
 		mode "0644"
 		variables(
-			:document_root => virtualhost_public_path,
-			:virtualhost_log_path => virtualhost_log_path,
-			:virtualhost_tmp_path => virtualhost_tmp_path,
-			:php_include_path => php_include_path,
-			:server_aliases => server_aliases
+			:document_root => "#{racktables_application_path}/wwwroot",
+			:servername => node["racktables"]["vhost"]["servername"],
+			:server_aliases => node["racktables"]["vhost"]["server_aliases"],
+			:virtualhost_log_path => node["racktables"]["vhost"]["virtualhost_log_path"],
+			:virtualhost_tmp_path => node["racktables"]["vhost"]["virtualhost_tmp_path"],
+			:php_include_path => node["racktables"]["vhost"]["php_include_path"]
 		)
 	end
 
@@ -119,21 +84,14 @@ if ['debian'].member? node["platform"]
 
 	# import the mysql data for the current version of racktables
 
-	remote_file "/tmp/racktables-contrib.zip" do
-		source "https://github.com/RackTables/racktables-contribs/archive/master.zip"
-		owner "root"
-		group "root"
-	end
-
-	execute "extract racktables-contrib.zip" do
-		cwd "/tmp"
-		user "root"
-		command "unzip -u racktables-contrib.zip"
-		action :run
+	git "/tmp/racktables-contrib" do
+		repository "git://github.com/RackTables/racktables-contribs.git"
+		reference "master"
+		action :sync
 	end
 
 	execute "import mysql of current version" do
-		command "mysql #{dbname} -p#{mysql_root_password} < /tmp/racktables-contribs-master/init-full-#{version}.sql"
+		command "mysql #{dbname} -p#{mysql_root_password} < /tmp/racktables-contrib/init-full-#{version}.sql"
 	end
 
 	# Last configuration file and user creation for application

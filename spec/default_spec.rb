@@ -30,15 +30,15 @@ require 'chefspec'
 			@chef_run.should execute_command 'a2ensite apache2-racktables.conf'
 		end
 		it "should create sessions directory owend by www-data" do
-			@chef_run.should create_directory '/tmp/sessions'
-			@chef_run.directory('/tmp/sessions').should be_owned_by('www-data', 'www-data')
+			@chef_run.should create_directory "#{Chef::Config[:file_cache_path]}/sessions"
+			@chef_run.directory("#{Chef::Config[:file_cache_path]}/sessions").should be_owned_by('www-data', 'www-data')
 		end
 		it "should create the database and grant db user rights on it" do
 			@chef_run.should execute_command "mysql -ptestpwd -NBe 'CREATE DATABASE racktables CHARACTER SET utf8 COLLATE utf8_general_ci;'"
 			@chef_run.should execute_command "mysql -ptestpwd -NBe \"GRANT ALL PRIVILEGES ON racktables.* TO racktablesuser@localhost IDENTIFIED BY 'racktablespwd';\""
 		end
 		it "should import the mysql from sql file" do
-			@chef_run.should execute_command "mysql racktables -ptestpwd < /tmp/racktables-contrib/init-full-0.20.3.sql"
+			@chef_run.should execute_command "mysql racktables -ptestpwd < #{Chef::Config[:file_cache_path]}/racktables-contrib/init-full-0.20.3.sql"
 		end
 		it "should create secret.php" do
 			@chef_run.should create_file "/srv/racktables/wwwroot/inc/secret.php"

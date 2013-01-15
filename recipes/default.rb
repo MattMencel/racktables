@@ -64,7 +64,7 @@ if ['debian'].member? node["platform"]
 		command "a2ensite apache2-racktables.conf"
 	end
 
-	directory "/tmp/sessions" do
+	directory "#{Chef::Config[:file_cache_path]}/sessions" do
 		owner "www-data"
 		group "www-data"
 		mode 0755
@@ -84,14 +84,14 @@ if ['debian'].member? node["platform"]
 
 	# import the mysql data for the current version of racktables
 
-	git "/tmp/racktables-contrib" do
+	git "#{Chef::Config[:file_cache_path]}/racktables-contrib" do
 		repository "git://github.com/RackTables/racktables-contribs.git"
 		reference "master"
 		action :sync
 	end
 
 	execute "import mysql of current version" do
-		command "mysql #{dbname} -p#{mysql_root_password} < /tmp/racktables-contrib/init-full-#{version}.sql"
+		command "mysql #{dbname} -p#{mysql_root_password} < #{Chef::Config[:file_cache_path]}/racktables-contrib/init-full-#{version}.sql"
 	end
 
 	# Last configuration file and user creation for application

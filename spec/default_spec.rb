@@ -21,18 +21,8 @@ require 'chefspec'
 				end
 			end
 		end
-		it "should donwload racktables.tar.gz file" do
-			@chef_run.should create_remote_file '/srv/racktables/racktables.tar.gz'
-		end
-		it "should extract racktables.tar.gz" do
-			@chef_run.should execute_command 'tar xvfz racktables.tar.gz'
-		end
-		it "should move the extracted folder to /home/racktables" do
-			@chef_run.should execute_command 'rsync -Wav --progress racktables-master/* .'
-		end
-		it "should delete the extracted directory" do
-			@chef_run.should delete_directory '/srv/racktables/racktables-master'
-		end
+		it "should clone the git repo" do
+			@chef_run.should create_directory "/srv/racktables"
 		it "should create the vhost config file from template" do
 			@chef_run.should create_file '/etc/apache2/sites-available/apache2-racktables.conf'
 		end
@@ -49,14 +39,8 @@ require 'chefspec'
 			@chef_run.should execute_command "mysql -ptestpwd -NBe 'CREATE DATABASE racktables CHARACTER SET utf8 COLLATE utf8_general_ci;'"
 			@chef_run.should execute_command "mysql -ptestpwd -NBe \"GRANT ALL PRIVILEGES ON racktables.* TO racktablesuser@localhost IDENTIFIED BY 'racktablespwd';\""
 		end
-		it "should get remote file racktables-contrib.zip" do
-			@chef_run.should create_remote_file '/tmp/racktables-contrib.zip'
-		end
-		it " should extract the zip file" do
-			@chef_run.should execute_command 'unzip -u racktables-contrib.zip'
-		end
 		it "should import the mysql from sql file" do
-			@chef_run.should execute_command "mysql racktables -ptestpwd < /tmp/racktables-contribs-master/init-full-0.20.3.sql"
+			@chef_run.should execute_command "mysql racktables -ptestpwd < /tmp/racktables-contrib/init-full-0.20.3.sql"
 		end
 		it "should create secret.php" do
 			@chef_run.should create_file "/srv/racktables/wwwroot/inc/secret.php"

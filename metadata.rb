@@ -1,3 +1,4 @@
+name					"racktables"
 maintainer				"Bigpoint GmbH"
 maintainer_email		"jtabel@bigpoint.net"
 license					"All rights reserved"

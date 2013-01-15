@@ -6,16 +6,16 @@ include_recipe "percona::server"
 # define some variables
 
 mysql_root_user = "root"
-mysql_root_password = node[:percona][:server][:root_password]
-version = node[:racktables][:version]
-dbname = node[:racktables][:db][:name]
-dbuser = node[:racktables][:db][:user]
-dbhost = node[:racktables][:db][:host]
-dbpassword = node[:racktables][:db][:password]
-dbdumpname = node[:racktables][:db][:dumpname]
-racktables_application_path = node[:racktables][:path][:application]
-racktables_application_user_hash = node[:racktables][:application][:password]
-apache_conf_path = node[:racktables][:path][:apache_conf]
+mysql_root_password = node['percona']['server']['root_password']
+version = node['racktables']['version']
+dbname = node['racktables']['db']['name']
+dbuser = node['racktables']['db']['user']
+dbhost = node['racktables']['db']['host']
+dbpassword = node['racktables']['db']['password']
+dbdumpname = node['racktables']['db']['dumpname']
+racktables_application_path = node['racktables']['path']['application']
+racktables_application_user_hash = node['racktables']['application']['password']
+apache_conf_path = node['racktables']['path']['apache_conf']
 
 if ['debian'].member? node["platform"]
 
@@ -33,7 +33,7 @@ if ['debian'].member? node["platform"]
 
 	# get racktables and extract it, cleaning up afterwards
 
-	git "#{racktables_application_path}" do
+	git racktables_application_path do
 		repository "git://github.com/RackTables/racktables.git"
 		reference "RackTables-#{version}"
 		action :sync

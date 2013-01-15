@@ -23,6 +23,7 @@ require 'chefspec'
 		end
 		it "should clone the git repo" do
 			@chef_run.should create_directory "/srv/racktables"
+		end
 		it "should create the vhost config file from template" do
 			@chef_run.should create_file '/etc/apache2/sites-available/apache2-racktables.conf'
 		end

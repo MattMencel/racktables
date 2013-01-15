@@ -1,3 +1,12 @@
+# Cookbook Name:: racktables
+# # Recipe:: default
+# #
+# # Copyright 2012, BigPoint GmbH
+# #
+# # All rights reserved - Do Not Redistribute
+# #
+#
+
 include_recipe "apache2"
 include_recipe "apache2::mod_php5"
 include_recipe "apache2::mod_ssl"
@@ -96,6 +105,7 @@ if ['debian'].member? node["platform"]
 	end
 
 	directory "#{Chef::Config[:file_cache_path]}/racktables-contrib" do
+		recursive true
 		action :delete
 	end
 

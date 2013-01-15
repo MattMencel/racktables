@@ -15,7 +15,7 @@ require 'chefspec'
 		case platform
 		when "debian"
 			# check, that all packages are installed
-			%w{ php5-gd php5-ldap php5-curl php5-mysql php5-snmp rsync unzip }.each do |pkg|
+			%w{ php5-gd php5-ldap php5-curl php5-mysql php5-snmp rsync unzip git }.each do |pkg|
 				it "should install #{pkg}" do
 					@chef_run.should install_package pkg
 				end

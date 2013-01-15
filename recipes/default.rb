@@ -9,6 +9,7 @@
 
 include_recipe "apache2"
 include_recipe "apache2::mod_php5"
+include_recipe "apache2::mod_rewrite"
 include_recipe "apache2::mod_ssl"
 include_recipe "percona::server"
 
@@ -26,7 +27,7 @@ apache_tmp = node['racktables']['vhost']['virtualhost_tmp_path']
 racktables_application_path = node['racktables']['path']['application']
 racktables_application_user_hash = node['racktables']['application']['password']
 apache_conf_path = node['racktables']['path']['apache_conf']
-
+7
 if ['debian'].member? node["platform"]
 
 	# Install needed packages
@@ -49,29 +50,15 @@ if ['debian'].member? node["platform"]
 		action :sync
 	end
 
-	template "#{apache_conf_path}/apache2-racktables.conf" do
-		source "apache2-racktables.conf.erb"
-		mode "0644"
-		variables(
-			:document_root => "#{racktables_application_path}/wwwroot",
-			:servername => node["racktables"]["vhost"]["servername"],
-			:server_aliases => node["racktables"]["vhost"]["server_aliases"],
-			:virtualhost_log_path => node["racktables"]["vhost"]["virtualhost_log_path"],
-			:virtualhost_tmp_path => apache_tmp,
-			:php_include_path => node["racktables"]["vhost"]["php_include_path"]
-		)
+	apache_site "default" do
+		enable false
 	end
 
-	execute "Enable apache rewrite" do
-		command "a2enmod rewrite"
-	end
-
-	execute "Disable apache default" do
-		command "a2dissite default"
-	end
-
-	execute "Enable racktables" do
-		command "a2ensite apache2-racktables.conf"
+	web_app "racktables" do
+		template "racktables.conf.erb"
+		docroot "#{racktables_application_path}/wwwroot"
+		server_name node["racktables"]["vhost"]["servername"]
+		server_aliases node["racktables"]["vhost"]["server_aliases"]
 	end
 
 	directory "#{apache_tmp}/sessions" do

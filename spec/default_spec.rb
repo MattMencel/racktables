@@ -21,14 +21,6 @@ require 'chefspec'
 				end
 			end
 		end
-		it "should create the vhost config file from template" do
-			@chef_run.should create_file '/etc/apache2/sites-available/apache2-racktables.conf'
-		end
-		it "should disable default vhost and activate racktables vhost" do
-			@chef_run.should execute_command 'a2enmod rewrite'
-			@chef_run.should execute_command 'a2dissite default'
-			@chef_run.should execute_command 'a2ensite apache2-racktables.conf'
-		end
 		it "should create sessions directory owend by www-data" do
 			@chef_run.should create_directory "#{Chef::Config[:file_cache_path]}/sessions"
 			@chef_run.directory("#{Chef::Config[:file_cache_path]}/sessions").should be_owned_by('www-data', 'www-data')

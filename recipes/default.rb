@@ -13,6 +13,7 @@ dbuser = node['racktables']['db']['user']
 dbhost = node['racktables']['db']['host']
 dbpassword = node['racktables']['db']['password']
 dbdumpname = node['racktables']['db']['dumpname']
+apache_tmp = node['racktables']['vhost']['virtualhost_tmp_path']
 racktables_application_path = node['racktables']['path']['application']
 racktables_application_user_hash = node['racktables']['application']['password']
 apache_conf_path = node['racktables']['path']['apache_conf']
@@ -47,7 +48,7 @@ if ['debian'].member? node["platform"]
 			:servername => node["racktables"]["vhost"]["servername"],
 			:server_aliases => node["racktables"]["vhost"]["server_aliases"],
 			:virtualhost_log_path => node["racktables"]["vhost"]["virtualhost_log_path"],
-			:virtualhost_tmp_path => node["racktables"]["vhost"]["virtualhost_tmp_path"],
+			:virtualhost_tmp_path => apache_tmp,
 			:php_include_path => node["racktables"]["vhost"]["php_include_path"]
 		)
 	end
@@ -64,7 +65,7 @@ if ['debian'].member? node["platform"]
 		command "a2ensite apache2-racktables.conf"
 	end
 
-	directory "#{Chef::Config[:file_cache_path]}/sessions" do
+	directory "#{apache_tmp}/sessions" do
 		owner "www-data"
 		group "www-data"
 		mode 0755
@@ -94,6 +95,10 @@ if ['debian'].member? node["platform"]
 		command "mysql #{dbname} -p#{mysql_root_password} < #{Chef::Config[:file_cache_path]}/racktables-contrib/init-full-#{version}.sql"
 	end
 
+	directory "#{Chef::Config[:file_cache_path]}/racktables-contrib" do
+		action :delete
+	end
+
 	# Last configuration file and user creation for application
 
 	template "#{racktables_application_path}/wwwroot/inc/secret.php" do
@@ -101,9 +106,6 @@ if ['debian'].member? node["platform"]
 		mode "0666"
 	end
 
-#	execute "create racktables user" do
-#		command "mysql #{dbname} -p#{mysql_root_password} -NBe \"INSERT INTO UserAccount (user_id, user_name, user_password_hash, user_realname) VALUES (1,'admin','#{racktables_application_user_hash}','RackTables Administrator');\""
-#	end
 end
 
 # vim: set ft=ruby et ts=4 sw=4

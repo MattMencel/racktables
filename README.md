@@ -54,7 +54,7 @@ Please ensure you have port 80 forwarded to access the WebUI, anything else is n
 
 This Vagrantfile is used during testing the cookbook:
 
-...
+```
 #vi: set ft=ruby ts=4 sw=4 :
 
 # Vagrant File for racktables test setup
@@ -83,7 +83,8 @@ Vagrant::Config.run do |config|
 		end
 	end
 end
-...
+```
+
 ToDo
 ====
 

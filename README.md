@@ -27,8 +27,11 @@ Currently, racktables cookbook is only tested on Debian, but should run fine on 
 * node["racktables"]["application"]["password"] - Password for admin user. Defaults to admin-hash
 * node["racktables"]["path"]["apache_conf"] - Path to vhost-conf. Defaults to /etc/apache2/sites-available
 * node["racktables"]["path"]["application"] - Path to application. Defaults to /srv/racktables
-* node["racktables"]["php_include_path"] - include path for php files
-* node["racktables"]["server_aliases"] - Array holding the server aliases for the vhost conf. Default is ["127.0.0.1", "localhost"]
+* node["racktables"]["vhost"]["servername"] - FQDN for server, defaults to localhost
+* node["racktables"]["vhost"]["server_aliases"] - Array holding the server aliases for the vhost conf. Default is ["127.0.0.1", "localhost"]
+* node["racktables"]["vhost"]["virtualhost_log_path"] - Path for logfiles from apache for this vhost. Defaults to /var/log/apache2
+* node["racktables"]["vhost"]["virtualhost_tmp_path"] - Path for temporary files Defaults to Chef::Config[:file_cache_path]
+* node["racktables"]["vhost"]["php_include_path"] - Include Path for PHP. Defaults to ".","/usr/share/php","/usr/share/pear"
 
 Recipes
 =======
@@ -38,9 +41,54 @@ Currently there is only a default recipe, that installs the Webserver and databa
 Usage
 =====
 
-Once installed, just use your webbrowser to access racktables. Make sure to use https, since otherwise passwords would be transfered in plaintext. For furhter information and documentation, please refer to the official racktables webpage and wiki:
+After succesfull chef run, racktables is accessable via any webbrowser. To login, you need the standard user admin with the password being the same as the username. For further documentation, please have a look at:
 
  * http://www.racktables.org
+
+Vagrantfile
+===========
+
+Please ensure you have port 80 forwarded to access the WebUI, anything else is not required.
+
+# Example Vagrantfile
+
+This Vagrantfile is used during testing the cookbook:
+
+...
+#vi: set ft=ruby ts=4 sw=4 :
+
+# Vagrant File for racktables test setup
+
+Vagrant::Config.run do |config|
+
+	# Definition of the apache web service machine
+
+	config.vm.define :squeeze64 do |squeeze64|
+		squeeze64.vm.box = "squeeze-64"
+		squeeze64.vm.box_url = "http://debbuild.bigpoint.net/squeeze64.box"
+		squeeze64.vm.host_name = "squeeze64"
+		squeeze64.vm.network :hostonly, "192.168.1.10"
+		squeeze64.vm.forward_port 80, 1234
+		squeeze64.vm.provision :chef_solo do |chef|
+			chef.node_name = "squeeze64"
+			chef.cookbooks_path = ["cookbooks"]
+			chef.add_recipe ("apt")
+			chef.add_recipe ("racktables")
+			chef.json = {
+				# MySQL settings for percona cookbook
+				'percona' => { 'server' => { 'root_password' => 'vagrant_root_password', 'debian_password' => 'vagrant_debian_password' } },
+				'racktables' => { 'vhost' => {'servername' => 'racktables.bigpoint.net' } }
+			}
+			chef.log_level = :debug
+		end
+	end
+end
+...
+ToDo
+====
+
+* adding possibility to set UserPW in recipe
+* adding ssl-vhost conf as an option
 
 License and Author
 ==================

@@ -11,6 +11,7 @@ Requirements
 The following cookbooks are required for installing racktables:
 
 * apache2
+* git
 * percona
 
 ## Platforms:

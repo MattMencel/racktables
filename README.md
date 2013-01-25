@@ -66,7 +66,7 @@ Vagrant::Config.run do |config|
 
 	config.vm.define :squeeze64 do |squeeze64|
 		squeeze64.vm.box = "squeeze-64"
-		squeeze64.vm.box_url = "http://debbuild.bigpoint.net/squeeze64.box"
+		# Internal URL, no public access
 		squeeze64.vm.host_name = "squeeze64"
 		squeeze64.vm.network :hostonly, "192.168.1.10"
 		squeeze64.vm.forward_port 80, 1234
@@ -77,8 +77,7 @@ Vagrant::Config.run do |config|
 			chef.add_recipe ("racktables")
 			chef.json = {
 				# MySQL settings for percona cookbook
-				'percona' => { 'server' => { 'root_password' => 'vagrant_root_password', 'debian_password' => 'vagrant_debian_password' } },
-				'racktables' => { 'vhost' => {'servername' => 'racktables.bigpoint.net' } }
+				'percona' => { 'server' => { 'root_password' => 'vagrant_root_password', 'debian_password' => 'vagrant_debian_password' } }
 			}
 			chef.log_level = :debug
 		end

@@ -9,6 +9,7 @@ version           "0.0.6"
 recipe "racktables", "Installs racktables DC asset management system"
 
 depends					"apache2"
+depends					"git"
 depends					"percona", "= 0.7.0"
 
 %w{ debian }.each do |os|

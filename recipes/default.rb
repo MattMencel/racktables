@@ -33,7 +33,7 @@ apache_conf_path = node['racktables']['path']['apache_conf']
 
 # currently only tested on debian, so only doing something for it
 
-if ['debian'].member? node["platform"]
+if ['debian','ubuntu'].member? node["platform"]
 
 	# Install needed packages
 

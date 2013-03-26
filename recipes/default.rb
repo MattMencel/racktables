@@ -49,7 +49,7 @@ if ['debian','ubuntu'].member? node["platform"]
 	# get desired version of racktables from git and put it to the application path
 
 	git racktables_application_path do
-		repository "git://github.com/RackTables/racktables.git"
+		repository "http://github.com/RackTables/racktables"
 		reference "RackTables-#{version}"
 		action :sync
 	end
@@ -95,7 +95,7 @@ if ['debian','ubuntu'].member? node["platform"]
 	# racktables-contrib allways has the mysql for the last stable version and many others
 	# we need this to import the necessary data
 	git "#{Chef::Config[:file_cache_path]}/racktables-contrib" do
-		repository "git://github.com/RackTables/racktables-contribs.git"
+		repository "http://github.com/RackTables/racktables-contribs"
 		reference "master"
 		action :sync
 	end

@@ -102,7 +102,7 @@ if ['debian','ubuntu'].member? node["platform"]
 
 	# import the downloaded mysql files into the created DB
 	execute "import mysql of current version" do
-		command "mysql #{dbname} -p#{mysql_root_password} < #{Chef::Config[:file_cache_path]}/racktables-contrib/init-full-#{version}.sql"
+		command "mysql #{dbname} -p#{mysql_root_password} < #{Chef::Config[:file_cache_path]}/racktables-contrib/demo.racktables.org/init-full-#{version}.sql"
 	end
 
 	# Dont want to be messy, cleaning up

@@ -10,9 +10,9 @@ recipe "racktables", "Installs racktables DC asset management system"
 
 depends					"apache2"
 depends					"git"
-depends					"percona", "= 0.7.0"
+depends					"percona"
 
-%w{ debian }.each do |os|
+%w{ debian, ubuntu }.each do |os|
 	supports os
 end
 

@@ -30,7 +30,7 @@ require 'chefspec'
 			@chef_run.should execute_command "mysql -ptestpwd -NBe \"GRANT ALL PRIVILEGES ON racktables.* TO racktablesuser@localhost IDENTIFIED BY 'racktablespwd';\""
 		end
 		it "should import the mysql from sql file" do
-			@chef_run.should execute_command "mysql racktables -ptestpwd < #{Chef::Config[:file_cache_path]}/racktables-contrib/init-full-0.20.3.sql"
+			@chef_run.should execute_command "mysql racktables -ptestpwd < #{Chef::Config[:file_cache_path]}/racktables-contrib/demos.racktables.org/init-full-0.20.3.sql"
 		end
 		it "should create secret.php" do
 			@chef_run.should create_file "/srv/racktables/wwwroot/inc/secret.php"

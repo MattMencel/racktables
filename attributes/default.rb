@@ -1,4 +1,4 @@
-default["racktables"]["version"] = "0.20.3"
+default["racktables"]["version"] = "0.20.5"
 default["racktables"]["db"]["host"] = "localhost"
 default["racktables"]["db"]["name"] = "racktables"
 default["racktables"]["db"]["user"] = "racktablesuser"

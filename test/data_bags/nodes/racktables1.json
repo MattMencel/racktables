@@ -1,0 +1,25 @@
+{
+    "id": "racktables1",
+    "name": "racktables1",
+    "chef_environment": "_default",
+    "json_class": "Chef::Node",
+    "automatic": {
+    "hostname": "vagrant-01",
+    "os": "wheezy",
+    "ipaddress": "192.168.224.10"
+    },
+    "normal": {
+    "tags": [ "id-vagrant" ]
+    },
+    "chef_type": "node",
+    "default": {
+    "roles": [
+        "cmdb"
+    ]
+    },
+    "override": {
+    },
+    "run_list": [
+    "role[chef-racktables]"
+    ]
+}

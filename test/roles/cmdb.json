@@ -1,0 +1,22 @@
+{
+    "name": "cmdb",
+    "description": "CMDB server",
+    "json_class": "Chef::Role",
+    "default_attributes": {
+        "apache2": {
+            "default_site_enabled": false
+        }
+    },
+    "override_attributes": {
+    "percona": {
+        "server": {
+        "role": "master"
+        }
+    },
+    "chef_type": "role",
+    "run_list": [
+        "recipe[chef-racktables::default]"
+    ],
+    "env_run_lists": {
+    }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "data_bag_item_racktables_mysql",
+  "json_class": "Chef::DataBagItem",
+  "chef_type": "data_bag_item",
+  "data_bag": "racktables",
+  "raw_data": {
+    "id": "mysql",
+    "root": {
+      "encrypted_data": "gr9hAq6TiQJq/GxFkwV4QqjYCve9W/bDScirclc6oPDnLSKU2+v9duJ9Piya\nmsn4+h5H0lXHedjtBkZdRCIaiQ==\n",
+      "iv": "yEjfsqZDjbII2OrkSC+cEA==\n",
+      "version": 1,
+      "cipher": "aes-256-cbc"
+    },
+    "debian": {
+      "encrypted_data": "YNyYQyJCaYP23D2Ral2L1HiIF7aybg7gEgSe3tN+ZjMdUPf3XcwKUE78LWVP\nZUDX5u69e/oBZbouA84LcEILwQ==\n",
+      "iv": "CT+GZGZDBMKkh4K8iGeO+w==\n",
+      "version": 1,
+      "cipher": "aes-256-cbc"
+    },
+    "replication": {
+      "encrypted_data": "Xf2gnxa/aRZ4bTUQNRyOgra9m5SE8edU5EVfg2XFfad7Y5KytSVxvhIsj0EC\np4kp907eeRJTNNOaY8bnlx3gqA==\n",
+      "iv": "LfyM3njZJB+2P2JkiM+NAw==\n",
+      "version": 1,
+      "cipher": "aes-256-cbc"
+    }
+  }
+}

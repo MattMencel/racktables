@@ -1,0 +1,27 @@
+{
+  "name": "data_bag_item_racktables_db",
+  "json_class": "Chef::DataBagItem",
+  "chef_type": "data_bag_item",
+  "data_bag": "racktables",
+  "raw_data": {
+    "id": "db",
+    "dbname": {
+      "encrypted_data": "Zf8zdCuz4dMnymLdlgW0BFkczkDCSESni5wldpzcmow=\n",
+      "iv": "539sXrc1zVulftm9bqFMYA==\n",
+      "version": 1,
+      "cipher": "aes-256-cbc"
+    },
+    "username": {
+      "encrypted_data": "bcVuQusToPYLZH5FE9YIwTAnriOsMWiMIkaZNqURKxc=\n",
+      "iv": "uiNfioa4VamCRuN8pi0oXA==\n",
+      "version": 1,
+      "cipher": "aes-256-cbc"
+    },
+    "password": {
+      "encrypted_data": "7c2GYWXhuF/92jh/HFqfpKwXhNeO+UXoKsUycbbjAHUkuLk+wr2ceXvhwY9y\nNVlv\n",
+      "iv": "QzgpEWZZtfMn/qASwjfuWA==\n",
+      "version": 1,
+      "cipher": "aes-256-cbc"
+    }
+  }
+}

@@ -1,4 +1,4 @@
-Description [![Build Status](https://travis-ci.org/Bigpoint/racktables.png?branch=next)](https://travis-ci.org/Bigpoint/racktables)
+Description [![Build Status](https://travis-ci.org/Bigpoint/racktables.png?branch=next)](https://travis-ci.org/Bigpoint/chef-racktables)
 ===========
 
 This cookbook provides a full installation of racktables, a datacenter asset management system. It installs apache2, including mod_php5 and mod_ssl, as well as mysql percona as database backend. 

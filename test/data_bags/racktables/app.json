@@ -1,0 +1,1 @@
+{"name":"data_bag_item_racktables_app","json_class":"Chef::DataBagItem","chef_type":"data_bag_item","data_bag":"racktables","raw_data":{"id":"app","password":{"encrypted_data":"GlWwVmnbxuWwGFrjs9mLMKolT2PHc9zO/4/U05Wgbj4=\n","iv":"dQ/03FwZVR1mTfAuyRUUPg==\n","version":1,"cipher":"aes-256-cbc"}}}

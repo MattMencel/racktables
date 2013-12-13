@@ -17,7 +17,6 @@ include_recipe "apache2::mod_rewrite"
 version = node['racktables']['version']
 apache_tmp = node['racktables']['vhost']['virtualhost_tmp_path'] 
 racktables_application_path = node['racktables']['path']['application']
-racktables_application_user_hash = node['racktables']['application']['password']
 apache_conf_path = node['racktables']['path']['apache_conf']
 
 # currently only tested on debian, so only doing something for it

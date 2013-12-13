@@ -6,20 +6,20 @@
   "raw_data": {
     "id": "db",
     "dbname": {
-      "encrypted_data": "Zf8zdCuz4dMnymLdlgW0BFkczkDCSESni5wldpzcmow=\n",
-      "iv": "539sXrc1zVulftm9bqFMYA==\n",
+      "encrypted_data": "5mjVOHsFFuyeWNd7uxYkcMrljawfDMzg9LWZLApmdks=\n",
+      "iv": "N7n4n+Gm6EZlYASIvwH6jQ==\n",
       "version": 1,
       "cipher": "aes-256-cbc"
     },
     "username": {
-      "encrypted_data": "bcVuQusToPYLZH5FE9YIwTAnriOsMWiMIkaZNqURKxc=\n",
-      "iv": "uiNfioa4VamCRuN8pi0oXA==\n",
+      "encrypted_data": "lbg0qhTCEiY13aI52d+s92Dt6gMGrEHUBheMynZFzkI=\n",
+      "iv": "Wcy3EUBxls1bycrXyDsW1g==\n",
       "version": 1,
       "cipher": "aes-256-cbc"
     },
     "password": {
-      "encrypted_data": "7c2GYWXhuF/92jh/HFqfpKwXhNeO+UXoKsUycbbjAHUkuLk+wr2ceXvhwY9y\nNVlv\n",
-      "iv": "QzgpEWZZtfMn/qASwjfuWA==\n",
+      "encrypted_data": "+JH+KabfsvetAwbuEvSBKqwbCYRUhZuLzwEg1KvdLjgBnZngtD8Avmrj4Ck1\nn4Hp\n",
+      "iv": "MXqXLvwitB6mDDpO1faQlw==\n",
       "version": 1,
       "cipher": "aes-256-cbc"
     }

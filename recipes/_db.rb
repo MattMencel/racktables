@@ -106,4 +106,7 @@ mysql_database db_cred['dbname'] do
     connection mysql_connection_info
     sql "UPDATE `UserAccount` SET user_password_hash = SHA1('#{app_cred['password']}') WHERE user_id=1"
     action :query
+    # retries to wait for initial dump of db
+    retries 5
+    retry_delay 5
 end

@@ -67,7 +67,7 @@ if ['debian','ubuntu'].member? node["platform"]
 		action :create
 	end
 
-    include_recipe "chef-racktables::_db"
+    include_recipe "racktables::_db"
 
 end
 

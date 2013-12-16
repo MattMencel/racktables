@@ -82,6 +82,7 @@ mysql_database db_cred['dbname'] do
     connection mysql_connection_info
     sql { ::File.open("/tmp/racktables-contrib/demo.racktables.org/init-full-#{version}.sql").read }
     action :query
+    not_if { File.exist?("/var/lib/mysql/racktables") }
 end
 
 template "#{racktables_application_path}/wwwroot/inc/secret.php" do

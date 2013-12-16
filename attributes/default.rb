@@ -1,4 +1,4 @@
-default["racktables"]["version"] = "0.20.5"
+default["racktables"]["version"] = "0.20.6"
 default["racktables"]["db"]["host"] = "localhost"
 default["racktables"]["path"]["apache_conf"] = "/etc/apache2/sites-available"
 default["racktables"]["path"]["application"] = "/srv/racktables"
